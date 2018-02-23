@@ -2,8 +2,6 @@
 	
 	<h1><?php _e('Usuarios RCC6', COM6_NS); ?></h1>
 
-	<input type="button" id="add_new" class="button" value="Agregar usuario">
-
 	<!--Estructura de la tabla-->
 	<table id="com6_users_table" class="datatable">
 		<thead>
@@ -23,6 +21,14 @@
 			<th>Modificar</th>
 		</tfoot>
 	</table>
+
+	<div class="com6-alert">
+		<div class="alert-bg"></div>
+		<div class="content-alert">
+			<p id="text-alert">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque inventore ex labore pariatur accusamus sapient.</p>
+			<p><a id="btn-alert" class="button com6_btn-close"></a></p>
+		</div>
+	</div>
 	
 	<!--Popup - Formulario de modificar usuario-->
 	<div class="com6-modal">
@@ -30,7 +36,7 @@
 		<div class="container-modal">
 			<div class="header-modal">
 				<a class="com6_btn-close">x</a>
-				<p>Modificar usuario:</p>
+				<p id="title-modal"></p>
 			</div>
 			<form action="<?php echo COM6_DIR; ?>inc/libs/set.Users.php" id="form-user" name="form-modificar">
 				<div class="content-modal">
@@ -73,7 +79,7 @@
 
 					<div class="row">
 						<input type="hidden" id="action" name="action">
-						<input type="submit" class="button" value="Modificar usuario">
+						<input type="submit" id="save" class="button" value="Modificar usuario">
 					</div>
 
 				</div>

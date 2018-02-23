@@ -1,8 +1,8 @@
 //Modals
 jQuery(function($){
 
-	var modals = $('.com6-modal');
-	var close = $('.com6_btn-close, .modal-bg');
+	var modals = $('.com6-modal, .com6-alert');
+	var close = $('.com6_btn-close, .modal-bg, .alert-bg');
 
 	close.on('click', function() {
 		modals.removeClass('show');
@@ -43,12 +43,23 @@ var langDataTables = {
 	};
 
 jQuery(function($){
-	var table = $('.datatable').DataTable({
+
+	var modal = $('.com6-modal');
+	var alert = $('.com6-alert');
+
+	$(document).on('ready', function() {
+		listar();
+		//addUser();
+		sendForm();
+	});
+	
+	var listar = function() {
+		var table = $('.datatable').DataTable({
 					"language": langDataTables,
-					"dom": "Bfrtip",
+					"destroy": true,
 					"ajax": {
 						"method": "POST",
-						"url": com6Scripts.pluginsUrl + "/comuna6/inc/libs/consult.Users.php"
+						"url": com6Scripts.pluginsUrl + "/comuna6/inc/libs/admin/consult.Users.php"
 					},
 					"columns": [
 						{"data": "firstname"},
@@ -57,20 +68,40 @@ jQuery(function($){
 						{"data": "email"},
 						{"data": "minutes_state"},
 						{"defaultContent": "<input type='button' class='button modificar' value='Modificar'>"}
+					],
+					"dom": "Bfrtip",
+					"buttons": [
+						{
+							"extend": "excel",
+							"text": "Exportar a Excel",
+							"className": "button"
+						},
+						{
+							"text": 'Agregar usuario',
+							"className": "button",
+							"action": function ( e, dt, node, config ) {
+								addUser();
+							}
+						}
 					]
 				});
 
-	modifyUser('.datatable tbody', table);
+		modifyUser('.datatable tbody', table);
+	}
 
-	function modifyUser(tbody,table) {
+	var modifyUser = function(tbody,table) {
 
 		$(tbody).on('click', 'input.modificar', function() {
+
+			document.getElementById('title-modal').innerHTML = "Modificar usuario:";
+
 			var data = table.row($(this).parents("tr")).data();
 			var nombres = $('#form-user #name').val(data.firstname); //Generando valor de Nombres			
 			var apellidos = $('#form-user #lastname').val(data.lastname); //Generando valor de Apellidos
 			var correo = $('#form-user #email').val(data.email); //Generando valor del Correo electronico
 			var telefono = $('#form-user #phone').val(data.phone); //Generando valor del Numero de telefono
 			var documento = $('#form-user #document').val(data.document); //Generando valor del Numero de documento
+			var save = $('#form-user #save').val('Modificar usuario'); //Generando valor del Botón de guardar
 			var action = $('#form-user #action').val('modificar');
 
 			//Generando el valor de la lista desplegable de Estado en plan de minutos
@@ -93,27 +124,101 @@ jQuery(function($){
 				}
 			}
 
-			$('.com6-modal').addClass('show');
+			modal.addClass('show');
 
-			$('#form-user').on('submit', function(e){
-				e.preventDefault();
-				modify();
+		});
+	}
+
+	var addUser = function() {
+		//$('#add_user').on('click', function(){
+
+			document.getElementById('title-modal').innerHTML = "Añadir usuario:";
+
+			if($('#form-user input').val() != '' || $('#form-user input').val() != ' ') {
+				$('#form-user input').val('');
+			}
+
+			$('#form-user #minutes option[value="activo"]').removeAttr('disabled');
+			$('#form-user #minutes option[value="activo"]').attr('selected','selected');
+			$('#form-user #minutes option[value="inactivo"]').removeAttr('disabled');
+			$('#form-user #minutes option[value="sin registrar"]').attr('disabled','disabled');
+
+			var save = $('#form-user #save').val('Añadir usuario'); //Generando valor del Botón de guardar
+			var action = $('#form-user #action').val('agregar');
+
+			modal.addClass('show');
+
+		//});
+	}
+
+	var sendForm = function() {
+		$('#form-user').on('submit', function(e){
+			e.preventDefault();
+			
+			var form = $(this).serialize();
+
+			$.ajax({
+				method: "POST",
+				url: com6Scripts.pluginsUrl + "/comuna6/inc/libs/admin/class.Users.php",
+				data: form
+			}).done(function(info){
+				var json_info = JSON.parse( info );
+
+				modal.removeClass('show');
+				$('.datatable').DataTable().ajax.reload();
+				confirm(json_info);
 			});
 		});
 	}
 
-	function modify(){
-		var form = $('#form-user').serialize();
-		console.log(form);
-		/*
-		$.ajax({
-			method: "POST",
-			url: com6Scripts.pluginsUrl + "/comuna6/inc/libs/set.Users.php",
-			data: form
-		}).done(function(info){
-			console.log(info);
-		});
-		*/
-	};
+
+
+	var confirm = function(info) {
+
+		switch(info.response) {
+			case "exists":
+				document.getElementById('text-alert').innerHTML = "El usuario con número de documento <b>" + $('#form-user #document').val() + "</b> ya existe." ;
+				document.getElementById('btn-alert').innerHTML = "Regresar e intentar de nuevo";
+
+				$('#btn-alert').on('click', function() {
+					alert.removeClass('show');
+					modal.addClass('show');
+				});
+			break;
+
+			case "error":
+				document.getElementById('text-alert').innerHTML = "Ha ocurrido un error al intentar registrar al usuario <b>" + $('#form-user #name').val() + " " + $('#form-user #lastname').val() + "</b>." ;
+				document.getElementById('btn-alert').innerHTML = "Cerrar e intentar de nuevo";
+				$('#btn-alert').on('click', function() {
+					alert.removeClass('show');
+					modal.removeClass('show');
+				});
+				listar();
+			break;
+
+			case "create":
+				document.getElementById('text-alert').innerHTML = "El usuario <b>" + $('#form-user #name').val() + "</b> con número de documento " + $('#form-user #document').val() + ", se ha creado correctamente." ;
+				document.getElementById('btn-alert').innerHTML = "Cerrar y actualizar listado";
+				$('#btn-alert').on('click', function() {
+					alert.removeClass('show');
+					modal.removeClass('show');
+				});
+				listar();
+			break;
+
+			case "modify":
+				document.getElementById('text-alert').innerHTML = "El usuario <b>" + $('#form-user #name').val() + " " + $('#form-user #lastname').val() + "</b> ha sido modificado éxitosamente." ;
+				document.getElementById('btn-alert').innerHTML = "Cerrar y actualizar listado";
+				$('#btn-alert').on('click', function() {
+					alert.removeClass('show');
+					modal.removeClass('show');
+				});
+				listar();
+			break;
+		}
+
+		alert.addClass('show');
+
+	}
 
 });
