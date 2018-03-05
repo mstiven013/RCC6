@@ -1,0 +1,83 @@
+/*Button style's*/
+.com6_users .button {
+	background-color: #00652e;
+	border: none;
+	box-shadow: none;
+	color: #fff;
+}
+	.com6_users .button:hover,
+	.com6_users .button:active,
+	.com6_users .button:focus {
+		background-color: #bc0823;
+		color: #fff;
+	}
+
+/*Alert style's*/
+.com6-alert {
+	bottom: 0px;
+    left: 0px;
+    opacity: 0;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    visibility: hidden;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+	.com6-alert.show {
+		visibility: visible;
+		opacity: 1;
+	}
+	.com6-alert .alert-bg {
+		background-color: rgba(0,0,0,0.6);
+		bottom: 0px;
+		left: 0px;
+		position: absolute;
+		right: 0px;
+		top: 0px;
+		z-index: -1;
+	}
+	.com6-alert .content-alert {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		background-color: #fff;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 70px;
+		padding: 50px 50px;
+		text-align: center;
+		width: 50%;
+		-webkit-transition: all 0.4s ease;
+		-o-transition: all 0.4s ease;
+		transition: all 0.4s ease;
+		z-index: 10000;
+	}
+		.com6-alert.show .content-alert {
+			margin-top: 50px;
+		}
+		.com6-alert .content-alert #text-alert {
+			font-size: 14pt;
+			font-weight: 400;
+		}
+		.com6-alert .content-alert .button {
+			background-color: #00652e;
+			border: none;
+			color: #fff;
+			font-size: 12pt;
+			font-weight: bold;
+			height: auto;
+			line-height: normal;
+			margin-top: 10px;
+			padding-bottom: 10px;
+			padding-top: 10px;
+			-webkit-transition: all 0.4s ease;
+			-o-transition: all 0.4s ease;
+			transition: all 0.4s ease;
+		}
+			.com6-alert .content-alert .button:hover,
+			.com6-alert .content-alert .button:active,
+			.com6-alert .content-alert .button:focus {
+				background-color: #bc0823;
+			}

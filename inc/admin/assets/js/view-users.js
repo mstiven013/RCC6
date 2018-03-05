@@ -59,12 +59,13 @@ jQuery(function($){
 					"destroy": true,
 					"ajax": {
 						"method": "POST",
-						"url": com6Scripts.pluginsUrl + "/comuna6/inc/libs/admin/consult.Users.php"
+						"url": com6Scripts.pluginsUrl + "/comuna6/inc/admin/assets/consult.Users.php"
 					},
 					"columns": [
 						{"data": "firstname"},
 						{"data": "lastname"},
 						{"data": "document"},
+						{"data": "state"},
 						{"data": "email"},
 						{"data": "minutes_state"},
 						{"defaultContent": "<input type='button' class='button modificar' value='Modificar'>"}
@@ -72,17 +73,23 @@ jQuery(function($){
 					"dom": "Bfrtip",
 					"buttons": [
 						{
-							"extend": "excel",
-							"text": "Exportar a Excel",
-							"className": "button"
-						},
-						{
 							"text": 'Agregar usuario',
 							"className": "button",
 							"action": function ( e, dt, node, config ) {
 								addUser();
 							}
-						}
+						},
+						{
+							"extend": 'excel',
+				            "text": 'Exportar a Excel',
+				            "className": "button",
+				            "filename": "Usuarios RCC6",
+				            "exportOptions": {
+				                "modifier": {
+				                    "page": 'current'
+				                }
+				            }
+			            }
 					]
 				});
 
@@ -98,14 +105,26 @@ jQuery(function($){
 			var data = table.row($(this).parents("tr")).data();
 			var nombres = $('#form-user #name').val(data.firstname); //Generando valor de Nombres			
 			var apellidos = $('#form-user #lastname').val(data.lastname); //Generando valor de Apellidos
+			var documento = $('#form-user #document').val(data.document); //Generando valor del Numero de documento
+			var state = $('#form-user #state').val(data.state); //Generando valor del Numero de documento
 			var correo = $('#form-user #email').val(data.email); //Generando valor del Correo electronico
 			var telefono = $('#form-user #phone').val(data.phone); //Generando valor del Numero de telefono
-			var documento = $('#form-user #document').val(data.document); //Generando valor del Numero de documento
 			var save = $('#form-user #save').val('Modificar usuario'); //Generando valor del Botón de guardar
 			var action = $('#form-user #action').val('modificar');
 
+			//Generando valor de la lista desplegable del estado de usuario
+			var statedSelected = ($("#form-user #state option[value='" + data.state + "']").length > 0);
+
+			if(statedSelected) {
+				$("#form-user #state option").each(function() {
+					if($(this).val() == data.state) {
+						$(this).attr('selected', 'selected');
+					}
+				});
+			}
+
 			//Generando el valor de la lista desplegable de Estado en plan de minutos
-			var selected = new Option(data.minutes_state, data.minutes_state, false, true);
+			//var selected = new Option(data.minutes_state, data.minutes_state, false, true);
 			var oExists = ($("#form-user #minutes option[value='" + data.minutes_state + "']").length > 0);
 
 			if(oExists) {
@@ -134,9 +153,23 @@ jQuery(function($){
 
 			document.getElementById('title-modal').innerHTML = "Añadir usuario:";
 
-			if($('#form-user input').val() != '' || $('#form-user input').val() != ' ') {
-				$('#form-user input').val('');
+			if($('#form-user #name').val() != '' || $('#form-user #name').val() != ' ') {
+				$('#form-user #name').val('');
 			}
+			if($('#form-user #lastname').val() != '' || $('#form-user #lastname').val() != ' ') {
+				$('#form-user #lastname').val('');
+			}
+			if($('#form-user #email').val() != '' || $('#form-user #email').val() != ' ') {
+				$('#form-user #email').val('');
+			}
+			if($('#form-user #document').val() != '' || $('#form-user #document').val() != ' ') {
+				$('#form-user #document').val('');
+			}
+			if($('#form-user #phone').val() != '' || $('#form-user #phone').val() != ' ') {
+				$('#form-user #phone').val('');
+			}
+
+			$('#form-user #state option[value="activo"]').attr('selected', 'selected');
 
 			$('#form-user #minutes option[value="activo"]').removeAttr('disabled');
 			$('#form-user #minutes option[value="activo"]').attr('selected','selected');
@@ -159,7 +192,7 @@ jQuery(function($){
 
 			$.ajax({
 				method: "POST",
-				url: com6Scripts.pluginsUrl + "/comuna6/inc/libs/admin/class.Users.php",
+				url: com6Scripts.pluginsUrl + "/comuna6/inc/admin/assets/class.Users.php",
 				data: form
 			}).done(function(info){
 				var json_info = JSON.parse( info );

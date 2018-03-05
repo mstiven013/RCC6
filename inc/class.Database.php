@@ -21,8 +21,10 @@
 							firstname VARCHAR(30) NOT NULL,
 							lastname VARCHAR(30) NOT NULL,
 							document VARCHAR(50) NOT NULL,
+							state VARCHAR(30) NOT NULL,
 							email VARCHAR(50) NOT NULL,
 							phone VARCHAR(50) NOT NULL,
+							date_register DATE NOT NULL,
 							minutes_state VARCHAR(30) NOT NULL
 						) CHARACTER SET utf8;";
 
