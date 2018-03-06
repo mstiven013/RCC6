@@ -60,7 +60,7 @@
 				if($sql) {
 					$info['response'] = 'activated';
 				} else {
-					$info['response'] = 'error-activated';
+					$info['response'] = 'error-minutes';
 				}
 
 			} else {
@@ -69,9 +69,9 @@
 				$query = $wpdb->query($sql);
 
 				if($query) {
-					$info['response'] = 'added';
+					$info['response'] = 'activated';
 				} else {
-					$info['response'] = 'error-added';
+					$info['response'] = 'error-minutes';
 				}
 
 			}
@@ -95,9 +95,9 @@
 				$query = $wpdb->query($sql);
 				
 				if($query) {
-					$info['response'] = 'activated';
+					$info['response'] = 'reactivated';
 				} else {
-					$info['response'] = 'activated';
+					$info['response'] = 'reactivated';
 				}
 			} else {
 				$info['response'] = 'error-activated';
@@ -198,21 +198,22 @@
 			if($query) {
 				foreach ($query as $user) {
 					$info['name'] = $user['firstname'];
-					$info['lastname'] = $user['lastname'];
 				}
 
 				$sql = "SELECT number_draw FROM $tableDraw WHERE document='$document'";
 				$query = $wpdb->get_results($sql, 'ARRAY_A');
 
-				$info['numbers'] = [];
-
 				if($query) {
+					$info['numbers'] = [];
+
 					foreach ($query as $draw) {
 						$numero = $draw['number_draw'];
 						array_push($info['numbers'], $numero);			
 					}
+
+					$info['response'] = 'view-draws';
 				} else {
-					$info['response'] = 'code-noregistered';
+					$info['response'] = 'noregistered-code';
 				}
 
 			} else {

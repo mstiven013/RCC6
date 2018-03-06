@@ -13,6 +13,20 @@
 	}
 
 /*Alert style's*/
+
+.com6-alert #numbers {
+    list-style: none;
+}
+	.com6-alert #numbers li {
+		border-bottom: 1px solid #ccc;
+		font-weight: bold;
+		padding-bottom: 10px;
+		padding-top: 10px;
+	}
+		.com6-alert #numbers li:last-child {
+			border-bottom: none;
+		}
+
 .com6-alert {
 	bottom: 0px;
     left: 0px;
