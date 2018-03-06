@@ -32,6 +32,11 @@
 			wp_localize_script('view-users.js', 'com6Scripts', array(
 			    'pluginsUrl' => plugins_url(),
 			));
+			wp_register_script( 'view-draws.js', COM6_DIR . 'inc/admin/assets/js/view-draws.js' );
+			wp_enqueue_script( 'view-draws.js' );
+			wp_localize_script('view-draws.js', 'com6Scripts', array(
+			    'pluginsUrl' => plugins_url(),
+			));
 			wp_register_style( 'com6_admin_styles.css', COM6_DIR . 'inc/admin/assets/css/com6_admin_styles.css' );
 			wp_enqueue_style( 'com6_admin_styles.css' );
 		}

@@ -54,7 +54,7 @@ jQuery(function($){
 	});
 	
 	var listar = function() {
-		var table = $('.datatable').DataTable({
+		var table = $('#com6_users_table').DataTable({
 					"language": langDataTables,
 					"destroy": true,
 					"ajax": {

@@ -1,23 +1,23 @@
-#com6_users_table {
+.datatable {
 	border-collapse: collapse;
 }
-	#com6_users_table tbody tr {
+	.datatable tbody tr {
 		border-bottom: 1px solid #bababa;
 	}
-		#com6_users_table tbody tr:nth-child(odd) {
+		.datatable tbody tr:nth-child(odd) {
 			background-color: transparent;
 		}
-		#com6_users_table tbody tr:nth-child(even) {
+		.datatable tbody tr:nth-child(even) {
 			background-color: #eaeaea;
 		}
-			#com6_users_table tbody tr:hover {
+			.datatable tbody tr:hover {
 				background-color: #e4e4e4;
 			}
-		#com6_users_table tbody tr td {
+		.datatable tbody tr td {
 			padding: 10px 5px 13px;
 			text-align: center;
 		}
-		#com6_users_table tbody tr td:nth-child(3) {
+		.datatable tbody tr td:nth-child(3) {
 			font-weight: bold;
 		}
 
