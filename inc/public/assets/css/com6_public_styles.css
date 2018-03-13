@@ -12,6 +12,58 @@
 		color: #fff;
 	}
 
+/*Form styles*/
+#draws-form #code-response,
+.com6_form #document-error {
+	display: none;
+	margin-bottom: 0px;
+	margin-top: 5px;
+}
+
+.com6_form .com6_row {
+	margin: 10px auto;
+}
+
+.com6_form input[type="text"],
+.com6_form input[type="phone"],
+.com6_form input[type="email"],
+.com6_form input[type="number"],
+.com6_form input[type="date"],
+.com6_form input[type="password"] {
+	border: 1px solid #ccc;
+	display: block;
+	padding: 10px;
+	width: 100%;
+}
+
+.com6_form input[type="text"]:focus,
+.com6_form input[type="phone"]:focus,
+.com6_form input[type="email"]:focus,
+.com6_form input[type="number"]:focus,
+.com6_form input[type="date"]:focus,
+.com6_form input[type="password"]:focus {
+	border-color: #ccc;
+}
+
+.com6_form input.error, 
+.com6_form input.error-document {
+	background-color: rgba(255, 0, 0, 0.05);
+	background-image: url('../img/incorrect-icon.png');
+	background-position: right 10px center;
+	background-repeat: no-repeat;
+	background-size: 25px;
+	border-color: #ff0000;
+}
+
+.com6_form input.correct {
+	background-color: rgba(0, 255, 31, 0.05);
+	background-image: url('../img/correct-icon.png');
+	background-position: right 10px center;
+	background-repeat: no-repeat;
+	background-size: 25px;
+	border-color: #008000;
+}
+
 /*Alert style's*/
 
 .com6-alert #numbers {
@@ -38,6 +90,7 @@
     -webkit-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
+    z-index: 100000000;
 }
 	.com6-alert.show {
 		visibility: visible;
@@ -74,6 +127,18 @@
 		.com6-alert .content-alert #text-alert {
 			font-size: 14pt;
 			font-weight: 400;
+		}
+		.com6-alert .important-note {
+			display: none;
+		}
+		.com6-alert .important-note.active {
+			display: block;
+		}
+		.com6-alert .content-alert #save {
+			display: none;
+		}
+		.com6-alert .content-alert #save.active {
+			display: inline-block;
 		}
 		.com6-alert .content-alert .button {
 			background-color: #00652e;

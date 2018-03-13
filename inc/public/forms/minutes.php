@@ -31,6 +31,14 @@
 	</div>
 
 	<div class="row">
+		<p class="important"><span class="required">NOTA IMPORTANTE:</span> Asegurese de que los datos que est&aacute; ingresando sean reales, ya que en caso de algún concurso, rifa o premio, se entregar&aacute; el premio &uacute;nicamente a la persona con qui&eacute;n concuerden estos datos.</p>
+	</div>
+
+	<div class="row">
+		<input type="checkbox" name="terms-conditions" id="terms-conditions" value="acepted"> <label id="label-check" for="terms-conditions">Acepto los términos y condiciones</label>
+	</div>
+
+	<div class="row">
 		<input type="hidden" id="date" name="date" value="<?php echo date('Y-m-d'); ?>">
 		<input type="hidden" id="action" name="action" value="registro-minutos">
 		<input type="submit" id="save" class="button" value="Registrarme">
