@@ -32,7 +32,8 @@
 							id INT(255) AUTO_INCREMENT PRIMARY KEY,
 							number_draw VARCHAR(255) NOT NULL,
 							code_number VARCHAR(255) NOT NULL,
-							document VARCHAR(50) NOT NULL
+							document VARCHAR(50) NOT NULL,
+							commerce VARCHAR(255) NOT NULL
 						) CHARACTER SET utf8;";
 
 			$wpdb->query($usersSql);

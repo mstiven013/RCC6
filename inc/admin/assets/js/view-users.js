@@ -70,7 +70,7 @@ jQuery(function($){
 						{"data": "minutes_state"},
 						{"defaultContent": "<input type='button' class='button modificar' value='Modificar'>"}
 					],
-					"dom": "Bfrtip",
+					"dom": "Blfrtip",
 					"buttons": [
 						{
 							"text": 'Agregar usuario',
@@ -81,14 +81,16 @@ jQuery(function($){
 						},
 						{
 							"extend": 'excel',
-				            "text": 'Exportar a Excel',
-				            "className": "button",
-				            "filename": "Usuarios RCC6",
-				            "exportOptions": {
-				                "modifier": {
-				                    "page": 'current'
-				                }
-				            }
+							"text": 'Exportar a Excel',
+							"className": "button",
+							"filename": "Usuarios RCC6",
+							"exportOptions": {
+								"modifier": {
+									"order":  'current',
+									"page":   'all',
+									"search": 'none',
+								}
+							}
 			            }
 					]
 				});

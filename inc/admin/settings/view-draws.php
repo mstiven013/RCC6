@@ -7,6 +7,7 @@
 		<thead>
 			<th>N&uacute;mero</th>
 			<th>C&oacute;digo</th>
+			<th>Comercio:</th>
 			<th>Documento</th>
 			<th>Nombre</th>
 			<th>Apellidos</th>
@@ -16,6 +17,7 @@
 		<tfoot>
 			<th>N&uacute;mero</th>
 			<th>C&oacute;digo</th>
+			<th>Comercio:</th>
 			<th>Documento</th>
 			<th>Nombre</th>
 			<th>Apellidos</th>

@@ -57,27 +57,27 @@
 			global $wpdb;
 			$table = $wpdb->prefix . 'com6_users';
 
-			$sql = "SELECT id FROM $table WHERE document='$document'";
-			$query = $wpdb->get_results($sql);
+			$sql_select_user = "SELECT id FROM $table WHERE document='$document'";
+			$query_select_user = $wpdb->get_results($sql_select_user);
 
-			if($query) {
+			if($query_select_user) {
 
-				$sql = "UPDATE $table SET state='activo',minutes_state='activo' WHERE document='$document'";
-				$query = $wpdb->query($sql);
+				$sql_update_user = "UPDATE $table SET firstname='$name',lastname='$lastname',state='activo',email='$email',phone='$phone',date_register='$date',minutes_state='activo' WHERE document='$document'";
+				$query_update_user = $wpdb->query($sql_update_user);
 
-				if($sql) {
+				if($query_update_user) {
 					$info['response'] = 'activated';
 				} else {
-					$info['response'] = 'error-minutes';
+					$info['response'] = 'activated';
 				}
 
 			} else {
 				
-				$sql = "INSERT INTO $table (firstname,lastname,document,state,email,phone,date_register,minutes_state) VALUES ('$name','$lastname','$document','activo','$email','$phone','$date','activo')";
-				$query = $wpdb->query($sql);
+				$sql_create_user = "INSERT INTO $table (firstname,lastname,document,state,email,phone,date_register,minutes_state) VALUES ('$name','$lastname','$document','activo','$email','$phone','$date','activo')";
+				$query_create_user = $wpdb->query($sql_create_user);
 
-				if($query) {
-					$info['response'] = 'activated';
+				if($query_create_user) {
+					$info['response'] = 'registered';
 				} else {
 					$info['response'] = 'error-minutes';
 				}
@@ -168,97 +168,77 @@
 					if($query_select_code) {
 
 						//Get number of this code
-						foreach ($query_select_code as $code) {
-							$info['number'] = $code['number_draw'];
+						foreach ($query_select_code as $codes) {
+							$info['number'] = $codes['number_draw'];
+
+							$documentCode = $codes['document'];
+							$commerceCode = $codes['commerce'];
 						}
 
-						$info['response'] = 'llegamos hasta el numero de la rifa';
-						
-						//Add document and commerce in $code register of database
-						$sql_registrar_codigo = "INSERT INTO $tableDraw (commerce,document) VALUES ('$commerce','$document') WHERE code_number='$code'";
-						$query_registrar_codigo = $wpdb->query($sql_registrar_codigo);
+						if($documentCode == '' && $commerceCode == '') {
+							//Add document and commerce in $code register of database
+							$sql_register_code = "UPDATE $tableDraw SET commerce='$commerce',document='$document' WHERE code_number='$code'";
+							$query_register_code = $wpdb->query($sql_register_code);
 
-						if($query_registrar_codigo){
-							$info['response'] = 'registrado';
-						} else {
-							$info['response'] = 'no-registrado';
-						}
+							if($query_register_code) {
+								$sql_update_user = "UPDATE $tableUsers SET firstname='$name',lastname='$lastname',state='activo',email='$email',phone='$phone',date_register='$date',minutes_state='activo' WHERE document='$document'";
+								$query_update_user = $wpdb->query($sql_update_user);
 
-
-					}
-
-				} else {
-					$info['response'] = 'user-inactive';
-				}
-				/*
-				//If this user is active
-				if($state == 'activo' ) {
-					
-					
-
-					//If code exists
-					if($query_select_code) {
-
-						
-						
-						//If register code correctly
-						if($query_register_code) {
-
-							//Update info if this user exists					
-							$sql_update_user = "UPDATE $tableUsers SET firstname='$name',lastname='$lastname',state='activo',email='$email',phone='$phone',date_register='$date',minutes_state='activo' WHERE document='$document'";
-							$query_update_user = $wpdb->query($sql_update_user);
-
-							if($query_update_user) {
-								$info['response'] = 'document-added';
+								if($query_update_user) {
+									$info['response'] = 'document-added';
+								} else {
+									$info['response'] = 'document-added';
+								}
 							} else {
 								$info['response'] = 'error-added';
 							}
-
-						//If not register code
 						} else {
-							$info['response'] = 'error-added';	
+							$info['response'] = 'code-registered';
 						}
-
-					//If not exists code
-					} else {
-						$info['response'] = 'error-added';
 					}
 
-				//If this user is inactive
 				} else {
 					$info['response'] = 'user-inactive';
 				}
-				*/
 			//If not exists this user
 			} else {
 
 				//Select register of this code
-				$sql_select_code = "SELECT number_draw FROM $tableDraw WHERE code_number='$code'";
+				$sql_select_code = "SELECT number_draw,code_number,commerce,document FROM $tableDraw WHERE code_number='$code'";
 				$query_select_code = $wpdb->get_results($sql_select_code, 'ARRAY_A');
 
 				//If code exists
 				if($query_select_code) {
 
 					//Get number of this code
-					foreach ($query_select_code as $code) {
-						$info['number'] = $code['number_draw'];
+					foreach ($query_select_code as $codes) {
+						$info['number'] = $codes['number_draw'];
+
+						$documentCode = $codes['document'];
+						$commerceCode = $codes['commerce'];
 					}
 
-					//Add document and commerce in $code register of database
-					$sql_register_code = "UPDATE $tableDraw SET commerce='$commerce',document='$document' WHERE code_number='$code'";
-					$query_register_code = $wpdb->query($sql_register_code);
+					if($documentCode == '' && $commerceCode == '') {
+						//Add document and commerce in $code register of database
+						$sql_register_code = "UPDATE $tableDraw SET commerce='$commerce',document='$document' WHERE code_number='$code'";
+						$query_register_code = $wpdb->query($sql_register_code);
 
-					if($query_register_code) {
-						//Create user if this document not exists in users table
-						$sql_create_user = "INSERT INTO $tableUsers (firstname,lastname,document,state,email,phone,date_register,minutes_state) VALUES ('$name','$lastname','$document','activo','$email','$phone','$date','activo')";
-						$query_create_user = $wpdb->query($sql_create_user);
+						if($query_register_code) {
+							$sql_create_user = "INSERT INTO $tableUsers (firstname,lastname,document,state,email,phone,date_register,minutes_state) VALUES ('$name','$lastname','$document','activo','$email','$phone','$date','activo')";
+							$query_create_user = $wpdb->query($sql_create_user);
 
-						if($query_create_user) {
-							$info['response'] = 'document-added';
+							if($query_create_user) {
+								$info['response'] = 'document-added';
+							} else {
+								$info['response'] = 'error-added';
+							}
 						} else {
 							$info['response'] = 'error-added';
 						}
+					} else {
+						$info['response'] = 'code-registered';
 					}
+
 				} else {
 					$info['response'] = 'error-added';
 				}

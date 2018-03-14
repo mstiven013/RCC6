@@ -37,11 +37,29 @@ jQuery(function($){
 		"columns": [
 			{"data": "number_draw"},
 			{"data": "code_number"},
+			{"data": "commerce"},
 			{"data": "document"},
 			{"data": "firstname"},
 			{"data": "lastname"},
 			{"data": "phone"}
+		],
+		"dom": "Blfrtip",
+		"buttons": [
+			{
+				"extend": 'excel',
+				"text": 'Exportar a Excel',
+				"className": "button",
+				"filename": "Codigos registrados Rifa RCC6",
+				"exportOptions": {
+					"modifier": {
+						"order":  'current',
+						"page":   'all',
+						"search": 'none',
+					}
+				}
+			}
 		]
+
 	});
 
 });
