@@ -52,7 +52,7 @@
 	</div>
 
 	<!--Popup - Formulario de modificar usuario-->
-	<div class="com6-alert">
+	<div id="com6-global-alert" class="com6-alert">
 		<div class="alert-bg"></div>
 		<div class="content-alert">
 			<div class="important-note">
@@ -60,8 +60,27 @@
 				<p>Asegurese de que los datos que est&aacute; ingresando sean reales, ya que en caso de algún concurso, rifa o premio, se entregar&aacute; el premio &uacute;nicamente a la persona con qui&eacute;n concuerden estos datos.</p>
 			</div>
 			<p id="text-alert"></p>
-			<p><a id="btn-alert" class="button com6_btn-close"></a> <input type="submit" id="save" name="save" class="button" value="Registrar"></p>
+			<p><a id="btn-alert" class="button com6_btn-close"></a> <input type="submit" id="save" name="save" class="button" value="Registrar"> <input type="button" id="btn-send-email" class="button" value="Enviar al correo"></p>
 		</div>
 	</div>
 
 </form>
+
+<!--Popup - Enviar al correo-->
+<div id="com6-email-alert" class="com6-alert">
+	<div class="alert-bg"></div>
+	<div class="content-alert">
+		<form method="post" id="mail-reg-draw" name="mail-reg-draw">
+		    <label>Escribe tu correo electr&oacute;nico</label>
+		    <input type="email" name="email" id="email" required="required" autocomplete="off" placeholder="Ejemplo: tucorreo@gmail.com">
+		    <input type="hidden" id="code" name="code">
+		    <input type="hidden" id="document" name="document">
+		    <input type="hidden" id="action" name="action" value="reg-draws">
+		    <p><input type="submit" class="button" id="send" value="Enviar información"></p>
+		</form>
+		<div class="response">
+		    <p id="text-response"></p>
+		    <a id="btn-alert" class="button com6_btn-close">Cerrar</a>
+		</div>
+	</div>
+</div>

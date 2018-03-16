@@ -7,6 +7,9 @@ jQuery(function($){
 
 	close.on('click', function() {
 		modals.removeClass('show');
+		if($('#draws-form #code').length > 0) {
+		    $('#draws-form #code').val('');
+		}
 	});
 
 	$(document).keyup(function(e){
@@ -148,7 +151,7 @@ jQuery(function($){
 					$('#btn-alert').removeAttr('href');
 					document.getElementById('text-alert').innerHTML = '';
 					document.getElementById('btn-alert').innerHTML = 'Modificar datos';
-					$('.com6-alert').addClass('show');
+					$('#com6-global-alert').addClass('show');
 
 				} else {
 					if($('#terms-response').length == 0) {
@@ -214,7 +217,7 @@ jQuery(function($){
 				$('#btn-alert').removeAttr('href');
 				document.getElementById('text-alert').innerHTML = '';
 				document.getElementById('btn-alert').innerHTML = 'Modificar datos';
-				$('.com6-alert').addClass('show');
+				$('#com6-global-alert').addClass('show');
 			} else {
 				if($('#terms-response').length == 0) {
 					textTerms = '<p id="terms-response" class="active">Debes aceptar los t&eacute;rminos y condiciones para continuar.</p>';
@@ -277,7 +280,7 @@ jQuery(function($){
 				}).done(function(info){
 					var json_info = JSON.parse(info);
 
-					$('.com6-alert').addClass('show');
+					$('#com6-global-alert').addClass('show');
 					confirm(json_info);
 				});
 			}
@@ -316,10 +319,11 @@ jQuery(function($){
 
 			//If code's draw eixsts
 			case 'view-draws':
+			    $('#btn-send-email').css({'display': 'inline-block'});
 				document.getElementById('text-alert').innerHTML = "¡Hola, <b>" + info.name + "</b>! <br/> Usted tiene registrados los siguientes n&uacute;meros";
 
 				$(info.numbers).each(function(){
-					$('ul#numbers').append('<li>- ' + this + ' -</li>');
+					$('ul#numbers').append('<li>' + this + '</li>');
 				});
 
 				document.getElementById('btn-alert').innerHTML = 'Cerrar';
@@ -331,6 +335,7 @@ jQuery(function($){
 
 			//If user no has codes registered
 			case 'noregistered-code':
+			    $('#btn-send-email').css({'display': 'none'});
 				document.getElementById('numbers').innerHTML = "";
 				document.getElementById('text-alert').innerHTML = "¡Hola, <b>" + info.name + "</b>! <br/> Lo sentimos pero, usted no tiene ninguna boleta registrada.";
 				document.getElementById('btn-alert').innerHTML = 'Cerrar';
@@ -338,6 +343,7 @@ jQuery(function($){
 
 			//If user ingresed no exists
 			case 'user-noexist':
+			    $('#btn-send-email').css({'display': 'none'});
 				document.getElementById('numbers').innerHTML = "";
 				document.getElementById('text-alert').innerHTML = "El usuario con número de documento <b>" + $('#view-draws-form #document').val() + "</b> no existe.";
 				document.getElementById('btn-alert').innerHTML = 'Cerrar e intentar de nuevo';
@@ -369,16 +375,17 @@ jQuery(function($){
 
 			//Added correctly
 			case 'document-added':
+			    $('#btn-send-email').css({'display': 'inline-block'});
 				$('.com6-alert .important-note').removeClass('active');
 				$('.com6-alert #save').removeClass('active');
 				document.getElementById('text-alert').innerHTML = "¡Hola <b>" + $('#draws-form #name').val() + "</b>! <br/> Su c&oacute;digo se ha registrado correctamente.<br/> El n&uacute;mero que le corresponde a su c&oacute;digo es el siguiente:<br/> <b>" + info.number + "</b>";
 				document.getElementById('btn-alert').innerHTML = 'Cerrar e ingresar otro c&oacute;digo';
 				$('#btn-alert').removeAttr('href');
-				$('#draws-form #code').val('');
 				break;
 
 			//Added correctly
 			case 'code-registered':
+			    $('#btn-send-email').css({'display': 'none'});
 				$('.com6-alert .important-note').removeClass('active');
 				$('.com6-alert #save').removeClass('active');
 				document.getElementById('text-alert').innerHTML = "¡Hola <b>" + $('#draws-form #name').val() + "</b>! <br/>El c&oacute;digo <b>" + $('#draws-form #code').val() + "</b>, ya fue registrado anteriormente." ;
@@ -389,6 +396,7 @@ jQuery(function($){
 
 			//If user is inactive
 			case 'user-inactive':
+			    $('#btn-send-email').css({'display': 'none'});
 				$('.com6-alert .important-note').removeClass('active');
 				$('.com6-alert #save').removeClass('active');
 				document.getElementById('text-alert').innerHTML = "¡Hola <b>" + $('#draws-form #name').val() + "</b>! <br/> Lo sentimos pero, usted se encuentra Inactivo, por favor reactive su cuenta y regrese para registrar su c&oacute;digo.";
@@ -398,6 +406,7 @@ jQuery(function($){
 
 			//If an error has ocurred
 			case 'error-added':
+			    $('#btn-send-email').css({'display': 'none'});
 				$('.com6-alert .important-note').removeClass('active');
 				$('.com6-alert #save').removeClass('active');
 				document.getElementById('text-alert').innerHTML = "¡Hola <b>" + $('#draws-form #name').val() + "</b>! <br/> Lo sentimos. Ha ocurrido un problema, por favor vuelve a intentarlo m&aacute;s tarde.";
@@ -407,6 +416,63 @@ jQuery(function($){
 
 		}
 
+	}
+	
+	//Boton enviar email
+    $('#btn-send-email').on('click', function() {
+        if($('#mail-view-draw').length > 0) {
+            var documento = $('.com6_form #document').val();
+	        $('#mail-view-draw #document').val(documento);
+        }
+        
+        if($('#mail-reg-draw').length > 0) {
+            var documento = $('.com6_form #document').val();
+            var code = $('.com6_form #code').val();
+            
+            $('#mail-reg-draw #document').val(documento);
+            $('#mail-reg-draw #code').val(code);
+        }
+	    
+	    $('#com6-global-alert').removeClass('show');
+	    $('#com6-email-alert').addClass('show');
+	    
+	    $('#com6-email-alert form').css({'display': 'block'});
+		$('#com6-email-alert .response').css({'display': 'none'});
+	});
+	
+	$('#mail-view-draw, #mail-reg-draw').on('submit', function(e){
+	    
+	    e.preventDefault();
+	    
+	    var form = $(this).serialize();
+	    
+	    $.ajax({
+	        method: "POST",
+	        url: com6Scripts.pluginsUrl + "/comuna6/inc/public/assets/mail.Class.php",
+	        data: form
+	    }).done(function(info){
+	        var json_info = JSON.parse(info);
+	        
+            $('#com6-email-alert form').css({'display': 'none'});
+			$('#com6-email-alert .response').css({'display': 'block'});
+			console.log(json_info);
+			confirmMail(json_info);
+	    });
+	    
+	});
+	
+	function confirmMail(info) {
+	    
+	    switch(info.response) {
+	        case 'email-sent':
+	            $('#com6-email-alert form').css;
+	            document.getElementById('text-response').innerHTML = 'El correo se envi&oacute; exitosamente, por favor revisa tu correo.';
+	            break;
+            case 'email-error-sent':
+                document.getElementById('text-response').innerHTML = 'Ha ocurrido un problema al enviar el correo, por favor intenta de nuevo m&aacute;s tarde.';
+                break;
+	    }
+	    
 	}
 
 });

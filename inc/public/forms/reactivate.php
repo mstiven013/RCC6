@@ -14,7 +14,7 @@
 </form>
 
 <!--Popup - Formulario de modificar usuario-->
-<div class="com6-alert">
+<div id="com6-global-alert" class="com6-alert">
 	<div class="alert-bg"></div>
 	<div class="content-alert">
 		<p id="text-alert"></p>

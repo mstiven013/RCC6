@@ -169,13 +169,17 @@
 			background-color: #00652e;
 			border: none;
 			color: #fff;
+			cursor: pointer;
 			font-size: 12pt;
 			font-weight: bold;
 			height: auto;
 			line-height: normal;
 			margin-top: 10px;
 			padding-bottom: 10px;
+			padding-left: 15px;
+			padding-right: 15px;
 			padding-top: 10px;
+			text-transform: none;
 			-webkit-transition: all 0.4s ease;
 			-o-transition: all 0.4s ease;
 			transition: all 0.4s ease;
@@ -185,3 +189,16 @@
 			.com6-alert .content-alert .button:focus {
 				background-color: #bc0823;
 			}
+		
+		.com6-alert #btn-send-email {
+		    display: none;
+		    margin-left: 10px;
+		}
+		
+#com6-email-alert form input {
+    text-align: center;
+}
+
+#com6-email-alert .response {
+    display: none;
+}
